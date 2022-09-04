@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <!-- 케밥케이스 -->
+        <word-relay start-word="아하"></word-relay>
+        <word-relay start-word="초밥"></word-relay>
+        <word-relay start-word="커피"></word-relay>
+    </div>
+    <script>
+        /* 카멜케이스 */
+        Vue.component('word-relay', {
+            template: `
+            <div>
+                <div>{{first}}</div>
+                <form v-on:submit="start">
+                    <input type="text" ref="key" v-model="value">
+                    <button type="submit">입력</button> 
+                </form>
+                <div>{{result}}</div>
+            </div>
+            `,
+            props:[
+                'startWord'
+            ],
+            data(){
+                console.log(this)
+                return{
+                    first: this.startWord,
+                    value: '',
+                    result: ''
+                }
+            } ,
+            methods: {
+                start(e){
+                    e.preventDefault();
+                    if(this.first[this.first.length-1] === this.value[0]){
+                        this.result = "정답!";
+                        this.first = this.value;
+                        this.value = '';
+                        this.$ref.key.focus();
+
+                    }else{
+                        this.result = "땡!";
+                        this.value = '';
+                    }
+                   
+                }
+            },
+        })
+    </script>
+    <script>
+        const app = new Vue({
+            el: '#root',
+        })
+    </script>
+</body>
+</html>
